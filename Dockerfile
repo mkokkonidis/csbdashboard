@@ -3,7 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 4200
+EXPOSE 8042
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -21,6 +21,7 @@ FROM johnzaza/csb-retention:3.3.40 AS currentversion
 
 FROM base AS final
 WORKDIR /app
+ENV ASPNETCORE_URLS=http://localhost:8042/
 COPY --from=publish /app/publish .
 COPY --from=currentversion /usr/share/nginx/html /wwwroot
 ENTRYPOINT ["dotnet", "CSBDashboardServer.dll"]
