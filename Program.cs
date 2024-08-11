@@ -20,6 +20,8 @@ app.UseAuthorization();
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");*/
 
+//Start server
 app.Run();
+
 
 
