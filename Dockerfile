@@ -22,5 +22,5 @@ FROM johnzaza/csb-retention:3.3.40 AS currentversion
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY --from=currentversion . .
+COPY --from=currentversion /usr/share/nginx/html .
 ENTRYPOINT ["dotnet", "CSBDashboardServer.dll"]
