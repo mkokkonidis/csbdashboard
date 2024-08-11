@@ -17,7 +17,10 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./CSBDashboardServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+FROM johnzaza/csb-retention:3.3.40 AS currentversion
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=currentversion . .
 ENTRYPOINT ["dotnet", "CSBDashboardServer.dll"]
