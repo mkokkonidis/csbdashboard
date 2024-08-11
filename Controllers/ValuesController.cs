@@ -6,7 +6,7 @@ using System;
 
 namespace CSBDashboardServer.Controllers
 {
-    [Route("dapi/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
