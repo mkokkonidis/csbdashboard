@@ -32,13 +32,24 @@ app.MapControllerRoute(
 
 
 
-//Start server
-// Map /patientmonitoring to serve the index.html file
+// Map /patient-monitoring to serve the index.html file
 app.MapGet("/patient-monitoring", async context =>
 {
-    context.Response.ContentType = "text/html";
-    await context.Response.SendFileAsync(Path.Combine(app.Environment.WebRootPath, "patient-monitoring", "index.html"));
+context.Response.ContentType = "text/html";
+await context.Response.SendFileAsync(Path.Combine(app.Environment.WebRootPath, "patient-monitoring", "index.html"));
 });
+
+for (int i = 0; i < 1000; i++)
+{
+    var path = "builder;patientId=" + i;
+    // Map /patient-monitoring to serve the index.html file
+    app.MapGet("/"+path, async context =>
+    {
+        context.Response.ContentType = "text/html";
+        await context.Response.SendFileAsync(Path.Combine(app.Environment.WebRootPath, path, "index.html"));
+    });
+}
+
 
 //Start server
 app.Run();
