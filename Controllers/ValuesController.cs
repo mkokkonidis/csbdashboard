@@ -4,6 +4,8 @@ using System.Net;
 using System.Text.Json;
 using System;
 using Microsoft.AspNetCore.Http.Extensions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net.Http.Headers;
 
 namespace CSBDashboardServer.Controllers
 {
@@ -58,8 +60,32 @@ namespace CSBDashboardServer.Controllers
             var auth = 
                 Request.Headers.Authorization.ToString();            
             var apiBaseUrlSlash = Environment.GetEnvironmentVariable("MAIN_URL"); //eg https://testing-retention.biomed.ntua.gr/api/
-             var ret = new { 
-                lightsleep = CompactObservations(auth, apiBaseUrlSlash, id, "code=762636008&category=29373008")
+
+            Func<string, object> O = (spec) => CompactObservations(auth, apiBaseUrlSlash, id, spec);
+
+            //var bloodPressures = getBloodPressures(auth, apiBaseUrlSlash, id, "code=75367002&category=408746007");
+
+
+            var ret = new {
+                lightSleep = O("code=762636008&category=29373008"),
+                deepSleep = O("code=762636008&category=60984000"),
+                remSleep = O("code=762636008&category=89129007"),
+                awakenings = O("code=192004002"),
+                calories = O("code=258790008"),
+                metresAscended = O("code=310"),
+                distance = O("code=246132006"),
+                steps = O("code=309"),
+                oxygen = O("code=442440005&category=408746007"),
+                bodyTemperature = O("code=386725007&category=408746007"),
+                heartRateWatchMin = O("code=364075005&category=62482003"),
+                heartRateWatchAvg = O("code=364075005&category=255586005"),
+                heartRateWatchMax = O("code=364075005&category=75540009"),
+                heartRateBloodPressureMeter = O("code=364075005&category=408746007"),
+                heartRateOximeter = O("code=364075005&category=59181002"),
+                weight = O("code=726527001&category=408746007"),
+                //bloodpresureDiastolic = bloodPressures.Item1,
+                //bloodpresureSystolic = bloodPressures.Item2,
+
             };
             return ret;
         }
