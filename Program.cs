@@ -30,6 +30,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+
+//Start server
+// Map /patientmonitoring to serve the index.html file
+app.MapGet("/patient-monitoring", async context =>
+{
+    context.Response.ContentType = "text/html";
+    await context.Response.SendFileAsync(Path.Combine(app.Environment.WebRootPath, "patient-monitoring", "index.html"));
+});
+
 //Start server
 app.Run();
 
