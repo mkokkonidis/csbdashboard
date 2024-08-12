@@ -39,7 +39,7 @@ Action<string> mapToIndexHTML = (s) => {
 };
 
 // Map urls to serve the index.html file
-mapToIndexHTML("patient-monitoring");
+mapToIndexHTML("patients-monitoring");
 mapToIndexHTML("addPatient");
 for (int i = 0; i < 1000; i++)
     mapToIndexHTML("builder;patientId=" + i);
