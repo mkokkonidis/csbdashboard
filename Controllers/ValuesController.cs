@@ -15,9 +15,11 @@ namespace CSBDashboardServer.Controllers
         
         static dynamic CompactObservations(string auth, string baseUrl, int patient,string spec)
         {
-            var ret = new List<decimal[]>();
-            
+            var retList = new List<decimal[]>();
+            var infoList = new List<string>();
+
             string url = $"{baseUrl}/api/fhir/Observation?patient=P{patient}&{spec}";
+            infoList.Add($"Info: Will try to obtain results from {url}");
             try
             {
                 using (WebClient client = new WebClient())
@@ -27,18 +29,25 @@ namespace CSBDashboardServer.Controllers
                     client.Headers.Add("Authorization", auth);
                     var jsonResponseBody = client.DownloadData(url);
                     var responseBody = (System.Text.Json.JsonElement)JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
+                    infoList.Add($"Info: deserialised");
                     var list = responseBody.GetProperty("entry").EnumerateArray();
+                    infoList.Add($"Info: entry array found");
                     foreach (var item in list)
                     {
                         var resource = item.GetProperty("resource");
                         var effectiveDateTime = resource.GetProperty("effectiveDateTime").GetString();
                         var value = resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal();
-                        ret.Add(new decimal[] { Convert.ToDateTime(effectiveDateTime).Ticks, value });
+                        retList.Add(new decimal[] { Convert.ToDateTime(effectiveDateTime).Ticks, value });
                     }
-                    return ret;
+                    return retList;
                 }
-            } catch (Exception ex) { }
-            return ret;
+            } catch (Exception ex) {
+                infoList.Add($"Info: {ex.Message}");
+            }
+            return new {
+                results = retList,
+                debug = infoList
+                };
         }
 
 
