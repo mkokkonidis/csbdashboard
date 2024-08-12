@@ -39,10 +39,36 @@ Action<string> mapToIndexHTML = (s) => {
 };
 
 // Map urls to serve the index.html file
-mapToIndexHTML("patients-monitoring");
-mapToIndexHTML("addPatient");
+
+// Map /patient-monitoring to serve the index.html file
+app.MapGet("/patient-monitoring", async context =>
+{
+    context.Response.ContentType = "text/html";
+    await context.Response.SendFileAsync(Path.Combine(app.Environment.WebRootPath, "patient-monitoring", "index.html"));
+});
+
+// Map /patient-monitoring to serve the index.html file
+app.MapGet("/addPatient", async context =>
+{
+    context.Response.ContentType = "text/html";
+    await context.Response.SendFileAsync(Path.Combine(app.Environment.WebRootPath, "addPatient", "index.html"));
+});
+
 for (int i = 0; i < 1000; i++)
-    mapToIndexHTML("builder;patientId=" + i);
+{
+    var path = "builder;patientId=" + i;
+    // Map /patient-monitoring to serve the index.html file
+    app.MapGet("/" + path, async context =>
+    {
+        context.Response.ContentType = "text/html";
+        await context.Response.SendFileAsync(Path.Combine(app.Environment.WebRootPath, path, "index.html"));
+    });
+}
+
+//mapToIndexHTML("patients-monitoring");
+//mapToIndexHTML("addPatient");
+//for (int i = 0; i < 1000; i++)
+//    mapToIndexHTML("builder;patientId=" + i);
 
 
 //Start server
