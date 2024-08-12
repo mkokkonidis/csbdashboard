@@ -6,6 +6,7 @@ using System;
 using Microsoft.AspNetCore.Http.Extensions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Net.Http.Headers;
+using System.Collections.Generic;
 
 namespace CSBDashboardServer.Controllers
 {
@@ -46,6 +47,16 @@ namespace CSBDashboardServer.Controllers
             } catch (Exception ex) {
                 infoList.Add($"Info: {ex.Message}");
             }
+
+            //Sort
+            retList.Sort((a, b) => a[0].CompareTo(b[0]));
+
+            //Ensure retList is a function from time to values
+            retList = retList
+                .GroupBy(pair => pair[0])  // Group by the first element
+                .Select(group => group.First()) // Select the first pair in each group
+                .ToList();
+
             return new {
                 results = retList,
                 debug = infoList
