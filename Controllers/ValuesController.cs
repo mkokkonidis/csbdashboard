@@ -19,7 +19,7 @@ namespace CSBDashboardServer.Controllers
         
         static dynamic CompactObservations(string auth, string apiBaseUrlSlash, int patient,string spec)
         {
-            const int pageSize = 2;
+            const int pageSize = 2000;
             var retList = new List<decimal[]>();
             var infoList = new List<string>();
 
@@ -28,7 +28,7 @@ namespace CSBDashboardServer.Controllers
             try
             {
                 int page = 0;
-                while (true)
+                //while (true)
                 {
 
                     int count = 0;
@@ -57,7 +57,7 @@ namespace CSBDashboardServer.Controllers
                         }
                     }
 
-                    if (count < pageSize) break;
+                    //if (count < pageSize) break;
                 }
             } catch (Exception ex) {
                 infoList.Add($"Info: {ex.Message}");
