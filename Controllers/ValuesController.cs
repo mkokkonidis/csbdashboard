@@ -59,16 +59,17 @@ namespace CSBDashboardServer.Controllers
                             var value =
                                 componentCode == null ?
                                     resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal() :
-                                    resource.GetProperty("component").EnumerateArray().ToList()
-                                            .Where(_ =>
-                                            true ||
-                                                   _.GetProperty("code")
-                                                    .GetProperty("coding")[0]
-                                                    //.EnumerateArray().ToList()[0]
-                                                    .GetProperty("code").GetString() == componentCode)
-                                            .FirstOrDefault()
-                                            .GetProperty("valueQuantity").GetProperty("value").GetDecimal();
-
+                                    resource.GetProperty("component")
+                                    .EnumerateArray().ToList().Count()
+                                            //.Where(_ =>
+                                            //true ||
+                                            //       _.GetProperty("code")
+                                            //        .GetProperty("coding")[0]
+                                            //        //.EnumerateArray().ToList()[0]
+                                            //        .GetProperty("code").GetString() == componentCode)
+                                            //.FirstOrDefault()
+                                            //.GetProperty("valueQuantity").GetProperty("value").GetDecimal();
+                                            ;
 
                             retList.Add(new decimal[] { 
                                 (Convert.ToDateTime(effectiveDateTime).Ticks - epochTicks)/10000, 
