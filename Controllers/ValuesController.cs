@@ -42,7 +42,6 @@ namespace CSBDashboardServer.Controllers
                         var value = resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal();
                         retList.Add(new decimal[] { Convert.ToDateTime(effectiveDateTime).Ticks, value });
                     }
-                    return retList;
                 }
             } catch (Exception ex) {
                 infoList.Add($"Info: {ex.Message}");
