@@ -18,7 +18,7 @@ namespace CSBDashboardServer.Controllers
         
         static dynamic CompactObservations(string auth, string apiBaseUrlSlash, int patient,string spec)
         {
-            const int pageSize = 2;
+            const int pageSize = 2000;
             var retList = new List<decimal[]>();
             var infoList = new List<string>();
 
