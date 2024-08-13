@@ -15,7 +15,7 @@ namespace CSBDashboardServer.Controllers
     public class ValuesController : ControllerBase
     {
         const bool Verbose = false;
-        static readonly long epochTicks = new DateTime(1970, 1, 1, 0, 0, 0, 0).Ticks;
+        static readonly long epochTicks = new DateTime(1971, 1, 1, 0, 0, 0, 0).Ticks;
         
         static dynamic CompactObservations(string auth, string apiBaseUrlSlash, int patient,string spec)
         {
