@@ -60,16 +60,14 @@ namespace CSBDashboardServer.Controllers
                                 componentCode == null ?
                                     resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal() :
                                     resource.GetProperty("component")
-                                    .EnumerateArray().ToList().Count()
-                                            //.Where(_ =>
-                                            //true ||
-                                            //       _.GetProperty("code")
-                                            //        .GetProperty("coding")[0]
-                                            //        //.EnumerateArray().ToList()[0]
-                                            //        .GetProperty("code").GetString() == componentCode)
-                                            //.FirstOrDefault()
-                                            //.GetProperty("valueQuantity").GetProperty("value").GetDecimal();
-                                            ;
+                                    .EnumerateArray().ToList()
+                                            .Where(_ =>
+                                                   _.GetProperty("code")
+                                                    .GetProperty("coding")[0]
+                                                    .GetProperty("code").GetString() == componentCode)
+                                            .FirstOrDefault()
+                                            .GetProperty("valueQuantity").GetProperty("value").GetDecimal();
+
 
                             retList.Add(new decimal[] { 
                                 (Convert.ToDateTime(effectiveDateTime).Ticks - epochTicks)/10000, 
@@ -131,7 +129,7 @@ namespace CSBDashboardServer.Controllers
                 heartRateOximeter = O("code=364075005&category=59181002"),
                 weight = O("code=726527001&category=408746007"),
                 bloodpresureDiastolic = O("code=75367002&category=408746007&component-code=271649006"),
-                bloodpresureSystolic = O("code=75367002&category=408746007&component-code=271650006")
+                bloodpresureSystolic =  O("code=75367002&category=408746007&component-code=271650006") 
             };
             return ret;
         }
