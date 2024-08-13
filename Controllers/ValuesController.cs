@@ -19,7 +19,7 @@ namespace CSBDashboardServer.Controllers
         
         static dynamic CompactObservations(string auth, string apiBaseUrlSlash, int patient,string spec)
         {
-            const int pageSize = 2000;
+            const int pageSize = 2;
             var retList = new List<decimal[]>();
             var infoList = new List<string>();
 
@@ -27,8 +27,10 @@ namespace CSBDashboardServer.Controllers
             infoList.Add($"Info: Will try to obtain results from {url}");
             try
             {
-                //while (true)
+                int page = 0;
+                while (true)
                 {
+
                     int count = 0;
 
                     using (WebClient client = new WebClient())
@@ -37,7 +39,7 @@ namespace CSBDashboardServer.Controllers
                         client.Headers.Add("Content-Type", "application/json");
                         client.Headers.Add("Authorization", auth);
                         var jsonResponseBody = 
-                            client.DownloadData(url + $"&_getpageoffset={retList.Count}&_count={pageSize}");
+                            client.DownloadData(url + $"&_page={++page}&_count={pageSize}");
                         var responseBody = (System.Text.Json.JsonElement)
                             JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
                         if (Verbose) infoList.Add($"Info: deserialised");
@@ -55,7 +57,7 @@ namespace CSBDashboardServer.Controllers
                         }
                     }
 
-                  //  if (count < pageSize) break;
+                    if (count < pageSize) break;
                 }
             } catch (Exception ex) {
                 infoList.Add($"Info: {ex.Message}");
