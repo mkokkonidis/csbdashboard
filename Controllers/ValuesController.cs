@@ -61,9 +61,10 @@ namespace CSBDashboardServer.Controllers
                                     resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal() :
                                     resource.GetProperty("component").EnumerateArray().ToList()
                                             .Where(_ =>
+                                            true ||
                                                    _.GetProperty("code")
-                                                    .GetProperty("coding")
-                                                    .EnumerateArray().ToList()[0]
+                                                    .GetProperty("coding")[0]
+                                                    //.EnumerateArray().ToList()[0]
                                                     .GetProperty("code").GetString() == componentCode)
                                             .FirstOrDefault()
                                             .GetProperty("valueQuantity").GetProperty("value").GetDecimal();
