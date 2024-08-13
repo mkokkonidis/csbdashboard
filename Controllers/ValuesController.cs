@@ -31,7 +31,7 @@ namespace CSBDashboardServer.Controllers
             var infoList = new List<string>();
 
             string url = $"{apiBaseUrlSlash}fhir/Observation?patient=P{patient}&{spec}";
-            infoList.Add($"Info: Will try to obtain results from {url} "+(componentCode!=null?$" with component-code={componentCode}":""));
+            infoList.Add($"Info: Results from {url} "+(componentCode!=null?$" with component-code={componentCode}":""));
             try
             {
                 int page = 0;
@@ -104,7 +104,7 @@ namespace CSBDashboardServer.Controllers
         {
             var auth = 
                 Request.Headers.Authorization.ToString();            
-            var apiBaseUrlSlash = Environment.GetEnvironmentVariable("MAIN_URL"); //eg https://testing-retention.biomed.ntua.gr/api/
+            var apiBaseUrlSlash = Environment.GetEnvironmentVariable("MAIN_URL"); //eg https://test-retention.biomed.ntua.gr/api/
 
             Func<string, object> O = (spec) => CompactObservations(auth, apiBaseUrlSlash, id, spec);
 
