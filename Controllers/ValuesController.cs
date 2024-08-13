@@ -19,6 +19,13 @@ namespace CSBDashboardServer.Controllers
         
         static dynamic CompactObservations(string auth, string apiBaseUrlSlash, int patient,string spec)
         {
+            string? componentCode = 
+                spec
+                    .Split('&')
+                    .Where(_=>_.StartsWith("component-code="))
+                    .Select(_ => _.Split('=')[1])
+                    .FirstOrDefault();
+
             const int pageSize = 2000;
             var retList = new List<decimal[]>();
             var infoList = new List<string>();
@@ -49,7 +56,19 @@ namespace CSBDashboardServer.Controllers
                         {
                             var resource = item.GetProperty("resource");
                             var effectiveDateTime = resource.GetProperty("effectiveDateTime").GetString();
-                            var value = resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal();
+                            var value =
+                                componentCode == null ?
+                                    resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal() :
+                                    resource.GetProperty("component").EnumerateArray().ToList()
+                                            .Where(_ =>
+                                                   _.GetProperty("code")
+                                                    .GetProperty("coding")
+                                                    .EnumerateArray().ToList()[0]
+                                                    .GetProperty("code").GetString() == componentCode)
+                                            .FirstOrDefault()
+                                            .GetProperty("valueQuantity").GetProperty("value").GetDecimal();
+
+
                             retList.Add(new decimal[] { 
                                 (Convert.ToDateTime(effectiveDateTime).Ticks - epochTicks)/10000, 
                                 value });
@@ -109,9 +128,8 @@ namespace CSBDashboardServer.Controllers
                 heartRateBloodPressureMeter = O("code=364075005&category=408746007"),
                 heartRateOximeter = O("code=364075005&category=59181002"),
                 weight = O("code=726527001&category=408746007"),
-                //bloodpresureDiastolic = bloodPressures.Item1,
-                //bloodpresureSystolic = bloodPressures.Item2,
-
+                bloodpresureDiastolic = O("code=75367002&category=408746007&component-code=271649006"),
+                bloodpresureSystolic = O("code=75367002&category=408746007&component-code=271650006")
             };
             return ret;
         }
