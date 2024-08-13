@@ -18,6 +18,7 @@ namespace CSBDashboardServer.Controllers
         
         static dynamic CompactObservations(string auth, string apiBaseUrlSlash, int patient,string spec)
         {
+            const int pageSize = 2;
             var retList = new List<decimal[]>();
             var infoList = new List<string>();
 
@@ -25,22 +26,30 @@ namespace CSBDashboardServer.Controllers
             infoList.Add($"Info: Will try to obtain results from {url}");
             try
             {
-                using (WebClient client = new WebClient())
+                while (true)
                 {
-                    client.Headers.Add("Accept", "application/json");
-                    client.Headers.Add("Content-Type", "application/json");
-                    client.Headers.Add("Authorization", auth);
-                    var jsonResponseBody = client.DownloadData(url);
-                    var responseBody = (System.Text.Json.JsonElement)JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
-                    if(Verbose) infoList.Add($"Info: deserialised");
-                    var list = responseBody.GetProperty("entry").EnumerateArray();
-                    if (Verbose) infoList.Add($"Info: entry array found");
-                    foreach (var item in list)
+                    using (WebClient client = new WebClient())
                     {
-                        var resource = item.GetProperty("resource");
-                        var effectiveDateTime = resource.GetProperty("effectiveDateTime").GetString();
-                        var value = resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal();
-                        retList.Add(new decimal[] { Convert.ToDateTime(effectiveDateTime).Ticks, value });
+                        client.Headers.Add("Accept", "application/json");
+                        client.Headers.Add("Content-Type", "application/json");
+                        client.Headers.Add("Authorization", auth);
+                        var jsonResponseBody = 
+                            client.DownloadData(url + $"&_getpageoffset={retList.Count}&_count={pageSize}");
+                        var responseBody = (System.Text.Json.JsonElement)
+                            JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
+                        if (Verbose) infoList.Add($"Info: deserialised");
+                        var list = responseBody.GetProperty("entry").EnumerateArray();
+                        if (Verbose) infoList.Add($"Info: entry array found");
+                        int count = 0;
+                        foreach (var item in list)
+                        {
+                            var resource = item.GetProperty("resource");
+                            var effectiveDateTime = resource.GetProperty("effectiveDateTime").GetString();
+                            var value = resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal();
+                            retList.Add(new decimal[] { Convert.ToDateTime(effectiveDateTime).Ticks, value });
+                            count++;
+                        }
+                        if (count < pageSize) break;  
                     }
                 }
             } catch (Exception ex) {
