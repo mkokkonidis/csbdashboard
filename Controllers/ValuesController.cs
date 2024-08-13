@@ -28,6 +28,8 @@ namespace CSBDashboardServer.Controllers
             {
                 while (true)
                 {
+                    int count = 0;
+
                     using (WebClient client = new WebClient())
                     {
                         client.Headers.Add("Accept", "application/json");
@@ -40,7 +42,6 @@ namespace CSBDashboardServer.Controllers
                         if (Verbose) infoList.Add($"Info: deserialised");
                         var list = responseBody.GetProperty("entry").EnumerateArray();
                         if (Verbose) infoList.Add($"Info: entry array found");
-                        int count = 0;
                         foreach (var item in list)
                         {
                             var resource = item.GetProperty("resource");
@@ -49,8 +50,9 @@ namespace CSBDashboardServer.Controllers
                             retList.Add(new decimal[] { Convert.ToDateTime(effectiveDateTime).Ticks, value });
                             count++;
                         }
-                        if (count < pageSize) break;  
                     }
+
+                    if (count < pageSize) break;
                 }
             } catch (Exception ex) {
                 infoList.Add($"Info: {ex.Message}");
