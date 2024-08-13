@@ -26,7 +26,7 @@ namespace CSBDashboardServer.Controllers
             infoList.Add($"Info: Will try to obtain results from {url}");
             try
             {
-                while (true)
+                //while (true)
                 {
                     int count = 0;
 
@@ -52,7 +52,7 @@ namespace CSBDashboardServer.Controllers
                         }
                     }
 
-                    if (count < pageSize) break;
+                  //  if (count < pageSize) break;
                 }
             } catch (Exception ex) {
                 infoList.Add($"Info: {ex.Message}");
