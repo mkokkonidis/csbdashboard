@@ -1,7 +1,13 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-RUN mkdir -rf /app/build || ls -laR
+RUN pwd; ls -laR
+WORKDIR /app/build
+RUN pwd; ls -laR
+WORKDIR /app/publish
+RUN pwd; ls -laR
+WORKDIR /app
+RUN pwd; ls -laR
 EXPOSE 8042
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
