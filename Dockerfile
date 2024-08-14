@@ -5,10 +5,11 @@ EXPOSE 8042
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
+USER app
 WORKDIR /src
-COPY ["CSBDashboardServer.csproj", "."]
+COPY  --chown=app:app ["CSBDashboardServer.csproj", "."]
 RUN dotnet restore "./CSBDashboardServer.csproj"
-COPY . .
+COPY  --chown=app:app . .
 RUN dotnet build "./CSBDashboardServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
@@ -20,6 +21,6 @@ FROM johnzaza/csb-retention:3.3.44 AS currentversion
 FROM base AS final
 WORKDIR /app
 ENV ASPNETCORE_HTTP_PORTS=8042;8080;4200
-COPY --from=publish /app/publish .
-COPY --from=currentversion /usr/share/nginx/html /app/wwwroot
+COPY   --chown=app:app --from=publish /app/publish .
+COPY   --chown=app:app --from=currentversion /usr/share/nginx/html /app/wwwroot
 ENTRYPOINT ["dotnet", "CSBDashboardServer.dll"]
