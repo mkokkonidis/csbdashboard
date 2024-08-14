@@ -44,4 +44,6 @@ WORKDIR /app
 ENV ASPNETCORE_HTTP_PORTS=8042;8080;4200
 COPY   --chown=app:app --from=publish /app/publish .
 COPY   --chown=app:app --from=currentversion /usr/share/nginx/html /app/wwwroot
+RUN sed -i 's|https://test-retention.biomed.ntua.gr/auth|https://" + location.hostname + "/auth|g' wwwroot/assets/env.js
+RUN sed -i 's|https://test-retention.biomed.ntua.gr/api/|https://" + location.hostname + "/api/|g' wwwroot/assets/env.js
 ENTRYPOINT ["dotnet", "CSBDashboardServer.dll"]
