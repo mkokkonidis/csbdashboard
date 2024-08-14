@@ -28,19 +28,47 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-// Middleware to remap all URLs to index.html
+// Middleware to serve index.html for all non-file requests
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value;
 
-    // Check if the file exists in the wwwroot directory
+    // Check if the requested path does not match an existing file
     if (!File.Exists(Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))))
     {
-        // If the requested path does not point to a physical file, serve index.html
-        context.Request.Path = "/index.html";
+        // Serve the index.html file
+        Console.WriteLine($"{path} loads index.html");
+        context.Response.ContentType = "text/html";
+        await context.Response.SendFileAsync(Path.Combine(app.Environment.WebRootPath, "index.html"));
     }
-    await next();
+    else
+    {
+        Console.WriteLine($"{path} unchanged as file {Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))} found");
+        await next(); // Proceed with the next middleware if a file was found
+    }
+
+
+
+
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.MapControllers();
 
