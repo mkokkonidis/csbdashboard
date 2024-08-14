@@ -18,12 +18,9 @@ RUN dotnet publish "./CSBDashboardServer.csproj" -c $BUILD_CONFIGURATION -o /app
 FROM johnzaza/csb-retention:3.3.44 AS currentversion
 
 FROM base AS final
+USER app
 WORKDIR /app
 ENV ASPNETCORE_HTTP_PORTS=8042;8080;4200
-COPY --from=publish /app/publish .
-COPY --from=currentversion /usr/share/nginx/html /app/wwwroot
-
-USER root
-RUN chown -R app:app /app/wwwroot
-USER app
+COPY --chown=app:app  --from=publish /app/publish .
+COPY --chown=app:app  --from=currentversion /usr/share/nginx/html /app/wwwroot
 ENTRYPOINT ["dotnet", "CSBDashboardServer.dll"]
