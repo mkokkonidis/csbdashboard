@@ -31,7 +31,7 @@ namespace CSBDashboardServer.Controllers
             var infoList = new List<string>();
 
             string url = $"{apiBaseUrlSlash}fhir/Observation?patient=P{patient}&{spec}";
-            infoList.Add($"Info: Results from {url} "+(componentCode!=null?$" with component-code={componentCode}":""));
+            if(Verbose) infoList.Add($"Info: Results from {url} "+(componentCode!=null?$" with component-code={componentCode}":""));
             try
             {
                 int page = 0;

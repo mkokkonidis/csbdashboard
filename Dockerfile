@@ -23,7 +23,7 @@ FROM base AS final
 USER app
 WORKDIR /app
 ENV ASPNETCORE_HTTP_PORTS=8042;8080;4200
-COPY --chown app:app --from=publish /app/publish .
-COPY --chown app:app --from=currentversion /usr/share/nginx/html /app/wwwroot
+COPY --chown=app:app --from=publish /app/publish .
+COPY --chown=app:app --from=currentversion /usr/share/nginx/html /app/wwwroot
 USER app
 ENTRYPOINT ["dotnet", "CSBDashboardServer.dll"]
