@@ -1,6 +1,8 @@
-using System.Collections.Generic;
 using System;
 using System.IO;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +14,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    //    app.UseExceptionHandler("/Home/Error");
+    // app.UseExceptionHandler("/Home/Error");
 }
 
-// Set default file to index.html
 app.UseDefaultFiles(new DefaultFilesOptions
 {
     DefaultFileNames = new List<string> { "index.html" }
@@ -27,26 +28,24 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-
-//Use middleware to remap URLs to index.html
+// Middleware to remap URLs to index.html for SPA
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value;
-    Console.WriteLine(path);
-    if (!File.Exists(Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))))
+
+    // Check if the path has no file extension and does not point to an actual file
+    if (!Path.HasExtension(path) && !File.Exists(Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))))
     {
         context.Request.Path = "/index.html";
         Console.WriteLine($"{path} => {context.Request.Path}");
     }
     else
+    {
         Console.WriteLine($"{path} unchanged as file {Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))} found");
+    }
     await next();
 });
+
 app.MapControllers();
 
-
-//Start server
 app.Run();
-
-
-
