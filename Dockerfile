@@ -1,26 +1,26 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-RUN pwd; ls -laR; chmod 777 .
+RUN pwd; ls -laR; chmod -R 777 .
 WORKDIR /app/build
-RUN pwd; ls -laR
+RUN pwd; ls -laR; chmod -R 777 .
 WORKDIR /app/publish; chmod 777 .
-RUN pwd; ls -laR
+RUN pwd; ls -laR; chmod -R 777 .
 WORKDIR /app
-RUN pwd; ls -laR; chmod 777 .
+RUN pwd; ls -laR; chmod -R 777 .
 EXPOSE 8042
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 USER app
 WORKDIR /app
-RUN pwd; ls -laR; chmod 777 .
+RUN pwd; ls -laR; chmod -R 777 .
 WORKDIR /app/build
-RUN pwd; ls -laR
+RUN pwd; ls -laR; chmod -R 777 .
 WORKDIR /app/publish; chmod 777 .
-RUN pwd; ls -laR
+RUN pwd; ls -laR; chmod -R 777 .
 WORKDIR /app
-RUN pwd; ls -laR; chmod 777 .
+RUN pwd; ls -laR; chmod -R 777 .
 WORKDIR /src
 COPY  --chown=app:app ["CSBDashboardServer.csproj", "."]
 RUN dotnet restore "./CSBDashboardServer.csproj"
@@ -33,6 +33,10 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./CSBDashboardServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM johnzaza/csb-retention:3.3.44 AS currentversion
+USER app
+WORKDIR /usr/share/nginx/html
+RUN pwd; ls -laR; chmod -R 777 .; chown -R app:app . || echo Did not manage
+
 
 FROM base AS final
 WORKDIR /app
