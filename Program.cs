@@ -30,11 +30,14 @@ app.UseAuthorization();
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value;
-
+    Console.WriteLine(path);
     if (!File.Exists(Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))))
     {
         context.Request.Path = "/index.html";
+        Console.WriteLine($"{path} => {context.Request.Path}");
     }
+    else
+        Console.WriteLine($"{path} unchanged as file {Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))} found");
     await next();
 });
 app.MapControllers();
