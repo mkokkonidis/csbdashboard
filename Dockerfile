@@ -33,8 +33,6 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./CSBDashboardServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM johnzaza/csb-retention:3.3.44 AS currentversion
-RUN groupadd -r app && useradd -r -g app app
-USER app
 WORKDIR /usr/share/nginx/html
 RUN sed -i 's|"https://test-retention.biomed.ntua.gr/|"https://" + location.hostname + "/|g' assets/env.js
 RUN pwd; ls -laR || echo Failed to ls; chmod -R 777 . || echo Failed to chmod ; chown -R app:app . || echo Did not manage to chown
