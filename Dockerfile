@@ -35,7 +35,7 @@ RUN dotnet publish "./CSBDashboardServer.csproj" -c $BUILD_CONFIGURATION -o /app
 FROM johnzaza/csb-retention:3.3.44 AS currentversion
 USER app
 WORKDIR /usr/share/nginx/html
-RUN pwd; ls -laR; chmod -R 777 .; chown -R app:app . || echo Did not manage
+RUN pwd; ls -laR || echo Failed to ls; chmod -R 777 . || echo Failed to chmod ; chown -R app:app . || echo Did not manage to chown
 
 
 FROM base AS final
