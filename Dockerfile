@@ -17,7 +17,7 @@ WORKDIR /src
 COPY  --chown=app:app ["CSBDashboardServer.csproj", "."]
 RUN dotnet restore "./CSBDashboardServer.csproj"
 COPY  --chown=app:app . .
-RUN ls -lR 
+RUN chmod -R 777 /src /app; ls -lR /src /app 
 RUN dotnet build "./CSBDashboardServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
