@@ -26,7 +26,7 @@ namespace CSBDashboardServer.Controllers
                     .Select(_ => _.Split('=')[1])
                     .FirstOrDefault();
 
-            const int pageSize = 2000;
+            const int pageSize = 100;
             var retList = new List<decimal[]>();
             var infoList = new List<string>();
 
@@ -35,7 +35,7 @@ namespace CSBDashboardServer.Controllers
             try
             {
                 int page = 0;
-                //while (true)
+                while (true)
                 {
 
                     int count = 0;
@@ -76,7 +76,7 @@ namespace CSBDashboardServer.Controllers
                         }
                     }
 
-                    //if (count < pageSize) break;
+                    if (count < pageSize) break;
                 }
             } catch (Exception ex) {
                 infoList.Add($"Info: {ex.Message}");
