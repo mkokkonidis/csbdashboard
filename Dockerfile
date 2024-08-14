@@ -13,6 +13,14 @@ EXPOSE 8042
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 USER app
+WORKDIR /app
+RUN pwd; ls -laR; chmod 777 .
+WORKDIR /app/build
+RUN pwd; ls -laR
+WORKDIR /app/publish; chmod 777 .
+RUN pwd; ls -laR
+WORKDIR /app
+RUN pwd; ls -laR; chmod 777 .
 WORKDIR /src
 COPY  --chown=app:app ["CSBDashboardServer.csproj", "."]
 RUN dotnet restore "./CSBDashboardServer.csproj"
