@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
+RUN mkdir -rf /app/build || ls -laR
 EXPOSE 8042
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -10,6 +11,7 @@ WORKDIR /src
 COPY  --chown=app:app ["CSBDashboardServer.csproj", "."]
 RUN dotnet restore "./CSBDashboardServer.csproj"
 COPY  --chown=app:app . .
+RUN ls -lR 
 RUN dotnet build "./CSBDashboardServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
