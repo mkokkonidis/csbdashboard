@@ -1,13 +1,13 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-RUN pwd; ls -laR
+RUN pwd; ls -laR; chmod 777 .
 WORKDIR /app/build
 RUN pwd; ls -laR
-WORKDIR /app/publish
+WORKDIR /app/publish; chmod 777 .
 RUN pwd; ls -laR
 WORKDIR /app
-RUN pwd; ls -laR
+RUN pwd; ls -laR; chmod 777 .
 EXPOSE 8042
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
