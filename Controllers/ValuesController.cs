@@ -108,8 +108,6 @@ namespace CSBDashboardServer.Controllers
 
             Func<string, object> O = (spec) => CompactObservations(auth, apiBaseUrlSlash, id, spec);
 
-            //var bloodPressures = getBloodPressures(auth, apiBaseUrlSlash, id, "code=75367002&category=408746007");
-
 
             var ret = new {
                 lightSleep = O("code=762636008&category=29373008"),
