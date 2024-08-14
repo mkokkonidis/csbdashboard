@@ -22,4 +22,8 @@ WORKDIR /app
 ENV ASPNETCORE_HTTP_PORTS=8042;8080;4200
 COPY --from=publish /app/publish .
 COPY --from=currentversion /usr/share/nginx/html /app/wwwroot
+
+USER root
+RUN chown -R app:app /app/wwwroot
+USER app
 ENTRYPOINT ["dotnet", "CSBDashboardServer.dll"]
