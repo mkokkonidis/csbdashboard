@@ -28,20 +28,16 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-// Middleware to remap URLs to index.html for SPA
+// Middleware to remap all URLs to index.html
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value;
 
-    // Check if the path has no file extension and does not point to an actual file
-    if (!Path.HasExtension(path) && !File.Exists(Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))))
+    // Check if the file exists in the wwwroot directory
+    if (!File.Exists(Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))))
     {
+        // If the requested path does not point to a physical file, serve index.html
         context.Request.Path = "/index.html";
-        Console.WriteLine($"{path} => {context.Request.Path}");
-    }
-    else
-    {
-        Console.WriteLine($"{path} unchanged as file {Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))} found");
     }
     await next();
 });
