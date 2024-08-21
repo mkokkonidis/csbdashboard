@@ -34,13 +34,11 @@ namespace CSBDashboardServer.Controllers
             if(Verbose) infoList.Add($"Info: Results from {url} "+(componentCode!=null?$" with component-code={componentCode}":""));
             try
             {
-                int page = 0;
                 while (true)
                 {
 
                     using (WebClient client = new WebClient())
                     {
-                        int countItemsReturnedInThisPage = 0;
                         client.Headers.Add("Accept", "application/json");
                         client.Headers.Add("Content-Type", "application/json");
                         client.Headers.Add("Authorization", auth);
@@ -71,9 +69,8 @@ namespace CSBDashboardServer.Controllers
                             retList.Add(new decimal[] { 
                                 (Convert.ToDateTime(effectiveDateTime).Ticks - epochTicks)/10000, 
                                 value });
-                            countItemsReturnedInThisPage++;
                         }
-                        if (countItemsReturnedInThisPage < pageSize) break;
+                        if (list.Count() < pageSize) break;
                     }
 
                 }

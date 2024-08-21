@@ -28,6 +28,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+var verbose = (Environment.GetEnvironmentVariable("VERBOSE")??"no").ToLower() == "yes";
 // Middleware to serve index.html for all non-file requests
 app.Use(async (context, next) =>
 {
@@ -38,13 +39,13 @@ app.Use(async (context, next) =>
     && !File.Exists(Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))))
     {
         // Serve the index.html file
-        Console.WriteLine($"{path} loads index.html");
+        if(verbose) Console.WriteLine($"{path} loads index.html");
         context.Response.ContentType = "text/html";
         await context.Response.SendFileAsync(Path.Combine(app.Environment.WebRootPath, "index.html"));
     }
     else
     {
-        Console.WriteLine($"{path} unchanged as file {Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))} found");
+        if(verbose) Console.WriteLine($"{path} unchanged as file {Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))} found");
         await next(); // Proceed with the next middleware if a file was found
     }
 
