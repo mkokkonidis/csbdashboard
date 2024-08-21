@@ -35,18 +35,17 @@ namespace CSBDashboardServer.Controllers
             try
             {
                 int page = 0;
-                //while (true)
+                while (true)
                 {
-
-                    int count = 0;
 
                     using (WebClient client = new WebClient())
                     {
+                        int countItemsReturnedInThisPage = 0;
                         client.Headers.Add("Accept", "application/json");
                         client.Headers.Add("Content-Type", "application/json");
                         client.Headers.Add("Authorization", auth);
                         var jsonResponseBody = 
-                            client.DownloadData(url + $"&_page={++page}&_count={pageSize}");
+                            client.DownloadData(url + $"&_getpagesoffset={retList.Count()}&_count={pageSize}");
                         var responseBody = (System.Text.Json.JsonElement)
                             JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
                         if (Verbose) infoList.Add($"Info: deserialised");
@@ -72,11 +71,11 @@ namespace CSBDashboardServer.Controllers
                             retList.Add(new decimal[] { 
                                 (Convert.ToDateTime(effectiveDateTime).Ticks - epochTicks)/10000, 
                                 value });
-                            count++;
+                            countItemsReturnedInThisPage++;
                         }
+                        if (countItemsReturnedInThisPage < pageSize) break;
                     }
 
-                    //if (count < pageSize) break;
                 }
             } catch (Exception ex) {
                 infoList.Add($"Info: {ex.Message}");
