@@ -20,4 +20,6 @@ jobs:
       run: docker build . --file Dockerfile --tag mkokkonidis/csbdashboard:4.0.0 
     - name: Push image to dockerhub
       run: docker push mkokkonidis/csbdashboard:4.0.0
+
+
       
