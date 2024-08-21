@@ -122,7 +122,12 @@ namespace CSBDashboardServer.Controllers
                             client.DownloadData(url);// + $"&_page={++page}&_count={pageSize}");
                         var responseBody = (System.Text.Json.JsonElement)
                             JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
-                        return responseBody;
+
+                        return new
+                        {
+                            results = responseBody,
+                            debug = infoList
+                        };
                         //if (Verbose) infoList.Add($"Info: deserialised");
                         //var list = responseBody.GetProperty("entry").EnumerateArray();
                         //if (Verbose) infoList.Add($"Info: entry array found");
@@ -154,7 +159,11 @@ namespace CSBDashboardServer.Controllers
             catch (Exception ex)
             {
                 infoList.Add($"Info: {ex.Message}");
-                return null;
+                return new
+                {
+                    //results = new { },
+                    debug = infoList
+                };
             }
 
             //Sort
