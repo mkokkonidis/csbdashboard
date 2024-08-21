@@ -17,7 +17,7 @@ namespace CSBDashboardServer.Controllers
         const bool Verbose = false;
         static readonly long epochTicks = new DateTime(1970, 1, 1, 0, 0, 0, 0).Ticks;
         
-        static async dynamic CompactObservations(string auth, string apiBaseUrlSlash, int patient,string spec)
+        static dynamic CompactObservations(string auth, string apiBaseUrlSlash, int patient,string spec)
         {
             string? componentCode = 
                 spec
