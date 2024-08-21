@@ -34,7 +34,7 @@ app.Use(async (context, next) =>
     var path = context.Request.Path.Value;
 
     // Check if the requested path does not match an existing file
-    if (!path.StartsWith("/valuess")
+    if (!path.StartsWith("/values")
     && !File.Exists(Path.Combine(app.Environment.WebRootPath, path.TrimStart('/'))))
     {
         // Serve the index.html file
