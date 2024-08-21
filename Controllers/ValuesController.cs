@@ -97,13 +97,13 @@ namespace CSBDashboardServer.Controllers
                 };
         }
 
-        static dynamic NonFHIRObservations(string auth, string apiBaseUrlSlash, int patient, string spec)
+        static dynamic NonFHIRObservations(string auth, string apiBaseUrlSlash, string endPath, object? data = null)
         {
             const int pageSize = 100;
 
             var infoList = new List<string>();
 
-            string url = $"{apiBaseUrlSlash}fhir/Observation?patient=P{patient}&{spec}";
+            string url = $"{apiBaseUrlSlash}nonfhir/api/{endPath}";
             if (Verbose) infoList.Add($"Info: Results from {url} ");
             try
             {
@@ -118,8 +118,9 @@ namespace CSBDashboardServer.Controllers
                         client.Headers.Add("Accept", "application/json");
                         client.Headers.Add("Content-Type", "application/json");
                         client.Headers.Add("Authorization", auth);
-                        var jsonResponseBody =
-                            client.DownloadData(url);// + $"&_page={++page}&_count={pageSize}");
+                        var jsonResponseBody = data == null?
+                            client.DownloadString(url):
+                            client.UploadString(url, JsonSerializer.Serialize(data));
                         var responseBody = (System.Text.Json.JsonElement)
                             JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
 
@@ -191,7 +192,8 @@ namespace CSBDashboardServer.Controllers
             var apiBaseUrlSlash = Environment.GetEnvironmentVariable("MAIN_URL"); // e.g., https://test-retention.biomed.ntua.gr/api/
 
             Func<string, Task<object>> O = async (spec) => await Task.Run(() => CompactFHIRObservations(auth, apiBaseUrlSlash, id, spec));
-            Func<string, Task<object>> NO = async (spec) => await Task.Run(() => NonFHIRObservations(auth, apiBaseUrlSlash, id, spec));
+            Func<string, Task<object>> GNO = async (path) => await Task.Run(() => NonFHIRObservations(auth, apiBaseUrlSlash, path));
+            Func<string, object, Task<object>> PNO = async (path, data) => await Task.Run(() => NonFHIRObservations(auth, apiBaseUrlSlash, path, data));
 
             var lightSleepTask = O("code=762636008&category=29373008");
             var deepSleepTask = O("code=762636008&category=60984000");
@@ -211,7 +213,7 @@ namespace CSBDashboardServer.Controllers
             var weightTask = O("code=726527001&category=408746007");
             var bloodPressureDiastolicTask = O("code=75367002&category=408746007&component-code=271649006");
             var bloodPressureSystolicTask = O("code=75367002&category=408746007&component-code=271650006");
-            var rasberryTask = NO("nonfhir/api/Measurement/get?limit=3000&offset=0");
+            var rasberryTask = PNO("Measurement/get?limit=3000&offset=0", new { userId = $"P{id}" });
 
             await Task.WhenAll(lightSleepTask, deepSleepTask, remSleepTask, awakeningsTask, caloriesTask, metresAscendedTask, distanceTask, stepsTask, oxygenTask, bodyTemperatureTask, heartRateWatchMinTask, heartRateWatchAvgTask, heartRateWatchMaxTask, heartRateBloodPressureMeterTask, heartRateOximeterTask, weightTask, bloodPressureDiastolicTask, bloodPressureSystolicTask, rasberryTask);
 
