@@ -26,7 +26,7 @@ namespace CSBDashboardServer.Controllers
                     .Select(_ => _.Split('=')[1])
                     .FirstOrDefault();
 
-            const int pageSize = 100;
+            const int pageSize = 1000;
             var retList = new List<decimal[]>();
             var infoList = new List<string>();
 
