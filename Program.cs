@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+var verbose = (Environment.GetEnvironmentVariable("VERBOSE") ?? "no").ToLower() == "yes";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -28,7 +30,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-var verbose = (Environment.GetEnvironmentVariable("VERBOSE")??"no").ToLower() == "yes";
 // Middleware to serve index.html for all non-file requests
 app.Use(async (context, next) =>
 {
