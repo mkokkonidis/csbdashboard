@@ -35,7 +35,7 @@ namespace CSBDashboardServer.Controllers
             try
             {
                 int page = 0;
-                while (true)
+                //while (true)
                 {
 
                     int count = 0;
