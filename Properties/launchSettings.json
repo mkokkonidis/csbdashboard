@@ -3,7 +3,7 @@
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5149/dapi/Values/149",
+      "launchUrl": "http://localhost:5149/values/0",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
