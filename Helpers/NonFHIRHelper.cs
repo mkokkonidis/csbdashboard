@@ -118,7 +118,7 @@ namespace CSBDashboardServer.Helpers
         {
             try
             {
-                List<dynamic> bigList = returnedObject.results;
+                List<dynamic> bigList = returnedObject.results.measurementEntries;
                 var list =
                     bigList.Where(_ => _.type == type &&
                              Convert.ToInt32(_.measurementDatetime.Split('T')[1].Split(':')[0]) % 8 == 0)
