@@ -122,7 +122,7 @@ namespace CSBDashboardServer.Helpers
                 var list =
                     bigList.Where(_ => _.type == type &&
                              Convert.ToInt32(_.measurementDatetime.Split('T')[1].Split(':')[0]) % 8 == 0)
-                 .Select(_ => new decimal[] { JSDateHelper.ToJSTicks(_.measurementDatetime), _.state })
+                 .Select(_ => new decimal[] { JSDateHelper.ToJSTicks(_.measurementDatetime), Convert.ToDecimal(_.state) })
                 .ToList();
 
                 //Sort
