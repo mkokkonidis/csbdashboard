@@ -27,6 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Helpers\FHIRHelper.cs" />
+    <Compile Include="Helpers\JSDateHelper.cs" />
+    <Compile Include="Helpers\NonFHIRHelper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include=".github\workflows\docker-image.yml" />
   </ItemGroup>
 
