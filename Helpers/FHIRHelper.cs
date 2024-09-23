@@ -6,7 +6,7 @@ namespace CSBDashboardServer.Helpers
 {
     public static class FHIRHelper
     {
-        static bool Verbose { get { return ValuesController.Verbose; } }
+        static bool Verbose { get { return FhirValuesController.Verbose; } }
 
 
         public static dynamic CompactFHIRObservations(string auth, string apiBaseUrlSlash, int patient, string spec)

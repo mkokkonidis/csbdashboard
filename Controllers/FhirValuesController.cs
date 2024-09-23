@@ -17,7 +17,7 @@ namespace CSBDashboardServer.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class FhirValuesController : ControllerBase
     {
         public const bool Verbose = false;
         
@@ -60,11 +60,11 @@ namespace CSBDashboardServer.Controllers
             var weightTask = O("code=726527001&category=408746007");
             var bloodPressureDiastolicTask = O("code=75367002&category=408746007&component-code=271649006");
             var bloodPressureSystolicTask = O("code=75367002&category=408746007&component-code=271650006");
-            var rasberryTask = PNO("Measurement/get", new { userId = $"P{id}" });
+            //var rasberryTask = PNO("Measurement/get", new { userId = $"P{id}" });
 
-            await Task.WhenAll(lightSleepTask, deepSleepTask, remSleepTask, awakeningsTask, caloriesTask, metresAscendedTask, distanceTask, stepsTask, oxygenTask, bodyTemperatureTask, heartRateWatchMinTask, heartRateWatchAvgTask, heartRateWatchMaxTask, heartRateBloodPressureMeterTask, heartRateOximeterTask, weightTask, bloodPressureDiastolicTask, bloodPressureSystolicTask, rasberryTask);
+            await Task.WhenAll(lightSleepTask, deepSleepTask, remSleepTask, awakeningsTask, caloriesTask, metresAscendedTask, distanceTask, stepsTask, oxygenTask, bodyTemperatureTask, heartRateWatchMinTask, heartRateWatchAvgTask, heartRateWatchMaxTask, heartRateBloodPressureMeterTask, heartRateOximeterTask, weightTask, bloodPressureDiastolicTask, bloodPressureSystolicTask);//, rasberryTask);
 
-            var rasb = await rasberryTask;
+//            var rasb = await rasberryTask;
 
             var ret = new
             {
@@ -86,50 +86,15 @@ namespace CSBDashboardServer.Controllers
                 weight = await weightTask,
                 bloodpresureDiastolic = await bloodPressureDiastolicTask,
                 bloodpresureSystolic = await bloodPressureSystolicTask,
-                pollutionIndex = NonFHIRHelper.FilterAndCompact(rasb, "pollutionIndex"),
-                temperatureExternal = NonFHIRHelper.FilterAndCompact(rasb, "temperatureExternal"),
-                humidityExternal = NonFHIRHelper.FilterAndCompact(rasb, "humidityExternal"),
-                temperature = NonFHIRHelper.FilterAndCompact(rasb, "temperature"),
-                humidity = NonFHIRHelper.FilterAndCompact(rasb, "humidity"),
+                //pollutionIndex = NonFHIRHelper.FilterAndCompact(rasb, "pollutionIndex"),
+                //temperatureExternal = NonFHIRHelper.FilterAndCompact(rasb, "temperatureExternal"),
+                //humidityExternal = NonFHIRHelper.FilterAndCompact(rasb, "humidityExternal"),
+                //temperature = NonFHIRHelper.FilterAndCompact(rasb, "temperature"),
+                //humidity = NonFHIRHelper.FilterAndCompact(rasb, "humidity"),
             };
 
             return ret;
         }
-
-        //// GET /<ValuesController>/5
-        //[HttpGet("{id}")]
-        //public object Get(int id)
-        //{
-        //    var auth = 
-        //        Request.Headers.Authorization.ToString();            
-        //    var apiBaseUrlSlash = Environment.GetEnvironmentVariable("MAIN_URL"); //eg https://test-retention.biomed.ntua.gr/api/
-
-        //    Func<string, object> O = (spec) => CompactObservations(auth, apiBaseUrlSlash, id, spec);
-
-
-        //    var ret = new {
-        //        lightSleep = O("code=762636008&category=29373008"),
-        //        deepSleep = O("code=762636008&category=60984000"),
-        //        remSleep = O("code=762636008&category=89129007"),
-        //        awakenings = O("code=192004002"),
-        //        calories = O("code=258790008"),
-        //        metresAscended = O("code=310"),
-        //        distance = O("code=246132006"),
-        //        steps = O("code=309"),
-        //        oxygen = O("code=442440005&category=408746007"),
-        //        bodyTemperature = O("code=386725007&category=408746007"),
-        //        heartRateWatchMin = O("code=364075005&category=62482003"),
-        //        heartRateWatchAvg = O("code=364075005&category=255586005"),
-        //        heartRateWatchMax = O("code=364075005&category=75540009"),
-        //        heartRateBloodPressureMeter = O("code=364075005&category=408746007"),
-        //        heartRateOximeter = O("code=364075005&category=59181002"),
-        //        weight = O("code=726527001&category=408746007"),
-        //        bloodpresureDiastolic = O("code=75367002&category=408746007&component-code=271649006"),
-        //        bloodpresureSystolic =  O("code=75367002&category=408746007&component-code=271650006") 
-        //    };
-        //    return ret;
-        //}
-
 
     }
 }

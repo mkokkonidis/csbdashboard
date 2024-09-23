@@ -7,7 +7,7 @@ namespace CSBDashboardServer.Helpers
 {
     public static class NonFHIRHelper
     {
-        static bool Verbose { get { return ValuesController.Verbose; } }
+        static bool Verbose { get { return NonFhirValuesController.Verbose; } }
 
 
         public static async Task<dynamic> NonFHIRObservations(string auth, string apiBaseUrlSlash, string endPath, object? data = null)
