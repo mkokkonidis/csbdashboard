@@ -86,7 +86,7 @@ namespace CSBDashboardServer.Controllers
                 weight = await weightTask,
                 bloodpresureDiastolic = await bloodPressureDiastolicTask,
                 bloodpresureSystolic = await bloodPressureSystolicTask,
-                rasberry = rasb,
+                //rasberry = rasb,
                 pollutionIndex = NonFHIRHelper.FilterAndCompact(rasb, "pollutionIndex"),
                 temperatureExternal = NonFHIRHelper.FilterAndCompact(rasb, "temperatureExternal"),
                 humidityExternal = NonFHIRHelper.FilterAndCompact(rasb, "humidityExternal"),
