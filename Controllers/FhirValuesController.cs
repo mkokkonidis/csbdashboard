@@ -58,13 +58,11 @@ namespace CSBDashboardServer.Controllers
             var heartRateBloodPressureMeterTask = O("code=364075005&category=408746007");
             var heartRateOximeterTask = O("code=364075005&category=59181002");
             var weightTask = O("code=726527001&category=408746007");
-            var bloodPressureDiastolicTask = O("code=75367002&category=408746007&component-code=271649006");
-            var bloodPressureSystolicTask = O("code=75367002&category=408746007&component-code=271650006");
-            //var rasberryTask = PNO("Measurement/get", new { userId = $"P{id}" });
+            var bloodPressureSystolicTask = O("code=75367002&category=408746007&component-code=271649006");
+            var bloodPressureDiastolicTask = O("code=75367002&category=408746007&component-code=271650006");
 
             await Task.WhenAll(lightSleepTask, deepSleepTask, remSleepTask, awakeningsTask, caloriesTask, metresAscendedTask, distanceTask, stepsTask, oxygenTask, bodyTemperatureTask, heartRateWatchMinTask, heartRateWatchAvgTask, heartRateWatchMaxTask, heartRateBloodPressureMeterTask, heartRateOximeterTask, weightTask, bloodPressureDiastolicTask, bloodPressureSystolicTask);//, rasberryTask);
 
-//            var rasb = await rasberryTask;
 
             var ret = new
             {
