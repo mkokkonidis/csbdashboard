@@ -35,7 +35,7 @@ namespace CSBDashboardServer.Controllers
             {
                 id =72;
                 apiBaseUrlSlash = "https://staging-retention.biomed.ntua.gr/api/";
-                auth = "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3eUtxLWdIQ3RFLTF2T1d2Q2otMFVzb3ZnaGY5UG4tOGp1NXZ2SWx1S3JRIn0.eyJleHAiOjE3MjcwMTQ1ODEsImlhdCI6MTcyNzAxNDI4MSwiYXV0aF90aW1lIjoxNzI3MDE0MjgxLCJqdGkiOiIxOTFhNGEwMC01MjQxLTQ0YjMtOWQxNC0yMTZhNjFmYjFhYTAiLCJpc3MiOiJodHRwczovL3N0YWdpbmctcmV0ZW50aW9uLmJpb21lZC5udHVhLmdyL2F1dGgvcmVhbG1zL3JldGVudGlvbiIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI1ODJiNzUzNi1mMGY0LTRkY2UtYjcxNC1jYTZkNzdiYmExN2MiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJkYXNoYm9hcmQiLCJub25jZSI6ImVmNmRiYTM2LTBkN2QtNGFiNy04YzdkLTVjNWUxNGIzMWFhMiIsInNlc3Npb25fc3RhdGUiOiJkMDgxYzJjMC05YTUzLTQ5NDUtYTk0NS0zY2ZlMmJhNWNlMjAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vc3RhZ2luZy1yZXRlbnRpb24uYmlvbWVkLm50dWEuZ3IiLCJodHRwOi8vbG9jYWxob3N0OjQyMDAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImNsaW5pY2FsX2Nhc2VfbWFuYWdlciIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJkZWZhdWx0LXJvbGVzLXJldGVudGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIG9yZ2FuaXNhdGlvbiBlbWFpbCBwcm9maWxlIiwic2lkIjoiZDA4MWMyYzAtOWE1My00OTQ1LWE5NDUtM2NmZTJiYTVjZTIwIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJEZXYgQWNjb3VudCIsIm9yZ2FuaXNhdGlvbiI6IjE3IiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZGV2IiwiZ2l2ZW5fbmFtZSI6IkRldiIsImZhbWlseV9uYW1lIjoiQWNjb3VudCIsImVtYWlsIjoiZGV2QHRlc3QuY29tIn0.DzB6BNWFy6ENSphCvtqF6f93TBk-vVbO4ID2j0wwG9j_7suzULr9moo5z9PHaXRYs9_-Ip0tkUXhpOpy9TLJund29fTZW20dO8yA4GSlViUY1pe4AZDHpYzP1kDY7rrsCqjcw1mVrV1Y5pyK1fBF2SVrOt3VKSqznhkPeIVzLWiBn4HjdUPJ60m-6UMnWNVXhnw4jHl0wKSJNuWs5oRIo9GGzTtgec7cv90eM2XfZY2_rXjeN3dD7936zc3pQhUymzLIdok8RtdyhBgcfJ2_hnro1PAUAjQCB9LDeU3QcrcWzTqTkbVCV-37TNp8GfExl6ex1DNVjDi2qkhHE5JJXQ";
+                auth = ""; //"Bearer ..."
             }
 
             Func<string, Task<object>> O = async (spec) => await Task.Run(() => FHIRHelper.CompactFHIRObservations(auth, apiBaseUrlSlash, id, spec));
@@ -84,11 +84,6 @@ namespace CSBDashboardServer.Controllers
                 weight = await weightTask,
                 bloodpresureSystolic = await bloodPressureSystolicTask,
                 bloodpresureDiastolic = await bloodPressureDiastolicTask,
-                //pollutionIndex = NonFHIRHelper.FilterAndCompact(rasb, "pollutionIndex"),
-                //temperatureExternal = NonFHIRHelper.FilterAndCompact(rasb, "temperatureExternal"),
-                //humidityExternal = NonFHIRHelper.FilterAndCompact(rasb, "humidityExternal"),
-                //temperature = NonFHIRHelper.FilterAndCompact(rasb, "temperature"),
-                //humidity = NonFHIRHelper.FilterAndCompact(rasb, "humidity"),
             };
 
             return ret;
