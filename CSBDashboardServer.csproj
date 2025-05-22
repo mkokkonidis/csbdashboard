@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Helpers\IsAliveHelper.cs" />
     <Compile Include="Helpers\FHIRHelper.cs" />
     <Compile Include="Helpers\JSDateHelper.cs" />
     <Compile Include="Helpers\NonFHIRHelper.cs" />
