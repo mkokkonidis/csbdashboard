@@ -2,3 +2,6 @@ bin
 obj
 CSBDashboardServer.csproj.user
 *~
+/.vs/CSBDashboardServer/v17/.wsuo
+/.vs/CSBDashboardServer/v17/DocumentLayout.json
+/.vs/VSWorkspaceState.json
