@@ -12,12 +12,12 @@ namespace CSBDashboardServer.Helpers
         public static string IsAlive(string fhirBaseUrlDirect, string nonfhirBaseUrlDirect, string patientManagerBaseUrlDirect)
         {
 
-            string fhirRequestUrl = $"{fhirBaseUrlDirect}/fhir/metadata".Replace("//f", "/f");
+            string fhirRequestUrl = $"{fhirBaseUrlDirect}/fhir/CapabilityStatement".Replace("//f", "/f");
             try
             {
-                //staging: curl   http://172.27.0.3:8080/fhir/metadata 
-                //staging: curl   -i http://localhost:8081/fhir/metadata 
-                //test: curl   -i http://localhost:8080/fhir/metadata 
+                //staging: curl   http://172.27.0.3:8080/fhir/metadata  or CapabilityStatement
+                //staging: curl   -i http://localhost:8081/fhir/metadata or CapabilityStatement
+                //test: curl   -i http://localhost:8080/fhir/metadata  or CapabilityStatement
                 using (WebClient client = new WebClient())
                 {
                     client.Headers.Add("Accept", "application/fhir+json");
