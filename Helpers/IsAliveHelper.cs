@@ -9,68 +9,39 @@ namespace CSBDashboardServer.Helpers
     public static class IsAliveHelper
     {
 
-        public static string IsAlive(string fhirBaseUrlDirect, string nonfhirBaseUrlDirect, string patientManagerBaseUrlDirect)
+        public static string IsAlive(string isAlive)
         {
+            //staging: curl   http://172.27.0.3:8080/fhir/metadata  or CapabilityStatement
+            //staging: curl   -i http://localhost:8081/fhir/metadata or CapabilityStatement
+            //test: curl   -i http://localhost:8080/fhir/metadata  or CapabilityStatement
+            //staging: curl http://172.19.0.12:5000/api/Status
+            //staging:curl -i  localhost:5050/api/Status
+            //test: curl -i  localhost:5051/api/Status
+            //staging: curl 172.19.0.11:8080/api/patients
+            //
 
-            try
+            foreach (var item in isAlive.Split(';'))
             {
-                //staging: curl   http://172.27.0.3:8080/fhir/metadata  or CapabilityStatement
-                //staging: curl   -i http://localhost:8081/fhir/metadata or CapabilityStatement
-                //test: curl   -i http://localhost:8080/fhir/metadata  or CapabilityStatement
-                using (WebClient client = new WebClient())
+                var parts = item.Split("|");
+                var name = parts[0];
+                var url = parts[1];
+                try
                 {
-                    client.Headers.Add("Accept", "application/fhir+json");
-                    client.Headers.Add("Content-Type", "application/json");
-                    client.Headers.Add("Cache-Control", "no-cache");
-                    var jsonResponseBody =
-                        client.DownloadData(fhirBaseUrlDirect);
-                    //var responseBody = (System.Text.Json.JsonElement)
-                    //    JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
+
+                    using (WebClient client = new WebClient())
+                    {
+                        client.Headers.Add("Cache-Control", "no-cache");
+                        var jsonResponseBody =
+                            client.DownloadData(url);
+ 
+                    }
+                }
+                catch
+                {
+                    throw new Exception($"{name} is down");
                 }
             }
-            catch
-            {
-                throw new Exception($"FHIR is down -- {fhirBaseUrlDirect} --");
-            }
-
-            try
-            {
-                //staging: curl http://172.19.0.12:5000/api/Status
-                //staging:curl -i  localhost:5050/api/Status
-                //test: curl -i  localhost:5051/api/Status
-
-                using (WebClient client = new WebClient())
-                {
-                    client.Headers.Add("Cache-Control", "no-cache");
-                    var emptyBody =
-                        client.DownloadData(nonfhirBaseUrlDirect);
-                }
-            }
-            catch
-            {
-                throw new Exception($"Non-FHIR is down; {nonfhirBaseUrlDirect}");
-            }
-
-            try
-            {
-                //staging: curl 172.19.0.11:8080/api/patients
-                //
-                using (WebClient client = new WebClient())
-                {
-                    client.Headers.Add("Cache-Control", "no-cache");
-                    var jsonResponseBody =
-                        client.DownloadData(patientManagerBaseUrlDirect);
-                    //var responseBody = (System.Text.Json.JsonElement)
-                    //    JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
-                }
-            }
-            catch(Exception exc)
-            {
-                throw new Exception($"PatientManager is down; {patientManagerBaseUrlDirect} ");
-            }
-
-
-
+   
             return "OK";
  
     

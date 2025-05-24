@@ -29,13 +29,8 @@ namespace CSBDashboardServer.Controllers
         {
             try
             {
-
-                string fhirBaseUrlDirect = Environment.GetEnvironmentVariable("FHIR_BASE_URL_DIRECT");
-                string nonfhirBaseUrlDirect = Environment.GetEnvironmentVariable("NONFHIR_BASE_URL_DIRECT");
-                string patientManagerBaseUrlDirect = Environment.GetEnvironmentVariable("PATIENTMANAGER_BASE_URL_DIRECT");
-
-
-                return StatusCode(200, IsAliveHelper.IsAlive(fhirBaseUrlDirect, nonfhirBaseUrlDirect, patientManagerBaseUrlDirect));
+                var isAlive = Environment.GetEnvironmentVariable("ISALIVE");
+                return StatusCode(200, IsAliveHelper.IsAlive(isAlive));
             } catch(Exception exc) {
                 return StatusCode(500, exc.Message);
             }
