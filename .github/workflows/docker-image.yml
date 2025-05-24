@@ -17,9 +17,9 @@ jobs:
     - name: Log in dockerhub
       run:  echo "${{ secrets.DOCKERHUB_MKOKKONIDIS }}" | docker login -u mkokkonidis --password-stdin
     - name: Build the docker image
-      run: docker build . --file Dockerfile --tag mkokkonidis/csbdashboard:4.0.20d
+      run: docker build . --file Dockerfile --tag mkokkonidis/csbdashboard:4.0.20f
     - name: Push image to dockerhub
-      run: docker push mkokkonidis/csbdashboard:4.0.20d
+      run: docker push mkokkonidis/csbdashboard:4.0.20f
 
 
        
