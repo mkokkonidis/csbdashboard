@@ -36,12 +36,7 @@ namespace CSBDashboardServer.Controllers
             return IsAliveHelper.IsAlive(fhirBaseUrlDirect, nonfhirBaseUrlDirect, patientManagerBaseUrlDirect);
         }
 
-        //// GET /<ValuesController>/5
-        //[HttpGet]
-        //public async Task<object> Get(int foo)
-        //{
-        //    return Get();
-        //}
+
 
     }
 }

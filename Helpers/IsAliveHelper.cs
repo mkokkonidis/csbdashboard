@@ -52,24 +52,24 @@ namespace CSBDashboardServer.Helpers
             //    throw new HttpRequestException("Non-FHIR is down", null, System.Net.HttpStatusCode.InternalServerError);
             //}
 
-            //try
-            //{
-            //    //staging: curl 172.19.0.11:8080/api/patients
-            //    //
-            //    using (WebClient client = new WebClient())
-            //{
-            //    string patientManagerequestUrl = $"{patientManagerBaseUrlDirect}/api/patients".Replace("//p", "/p");
-            //    client.Headers.Add("Cache-Control", "no-cache");
-            //    var jsonResponseBody =
-            //        client.DownloadData(patientManagerequestUrl);
-            //    var responseBody = (System.Text.Json.JsonElement)
-            //        JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
-            //}
-            //}
-            //catch
-            //{
-            //    throw new HttpRequestException("PatientManager is down", null, System.Net.HttpStatusCode.InternalServerError);
-            //}
+            try
+            {
+                //staging: curl 172.19.0.11:8080/api/patients
+                //
+                using (WebClient client = new WebClient())
+                {
+                    string patientManagerequestUrl = $"{patientManagerBaseUrlDirect}/api/patients".Replace("//p", "/p");
+                    client.Headers.Add("Cache-Control", "no-cache");
+                    var jsonResponseBody =
+                        client.DownloadData(patientManagerequestUrl);
+                    var responseBody = (System.Text.Json.JsonElement)
+                        JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
+                }
+            }
+            catch
+            {
+                throw new HttpRequestException("PatientManager is down", null, System.Net.HttpStatusCode.InternalServerError);
+            }
 
 
 
