@@ -24,8 +24,8 @@ namespace CSBDashboardServer.Helpers
                     client.Headers.Add("Cache-Control", "no-cache");
                     var jsonResponseBody =
                         client.DownloadData(fhirBaseUrlDirect);
-                    var responseBody = (System.Text.Json.JsonElement)
-                        JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
+                    //var responseBody = (System.Text.Json.JsonElement)
+                    //    JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
                 }
             }
             catch
@@ -60,8 +60,8 @@ namespace CSBDashboardServer.Helpers
                     client.Headers.Add("Cache-Control", "no-cache");
                     var jsonResponseBody =
                         client.DownloadData(patientManagerBaseUrlDirect);
-                    var responseBody = (System.Text.Json.JsonElement)
-                        JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
+                    //var responseBody = (System.Text.Json.JsonElement)
+                    //    JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
                 }
             }
             catch(Exception exc)
