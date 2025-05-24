@@ -12,7 +12,6 @@ namespace CSBDashboardServer.Helpers
         public static string IsAlive(string fhirBaseUrlDirect, string nonfhirBaseUrlDirect, string patientManagerBaseUrlDirect)
         {
 
-            string fhirRequestUrl = $"{fhirBaseUrlDirect}/fhir/CapabilityStatement".Replace("//f", "/f");
             try
             {
                 //staging: curl   http://172.27.0.3:8080/fhir/metadata  or CapabilityStatement
@@ -24,17 +23,16 @@ namespace CSBDashboardServer.Helpers
                     client.Headers.Add("Content-Type", "application/json");
                     client.Headers.Add("Cache-Control", "no-cache");
                     var jsonResponseBody =
-                        client.DownloadData(fhirRequestUrl);
+                        client.DownloadData(fhirBaseUrlDirect);
                     var responseBody = (System.Text.Json.JsonElement)
                         JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
                 }
             }
             catch
             {
-                throw new Exception($"FHIR is down -- {fhirRequestUrl} --");
+                throw new Exception($"FHIR is down -- {fhirBaseUrlDirect} --");
             }
 
-            string nonfhirRequestUrl = $"{fhirBaseUrlDirect}/api/Status".Replace("//a", "/a");
             try
             {
                 //staging: curl http://172.19.0.12:5000/api/Status
@@ -45,15 +43,14 @@ namespace CSBDashboardServer.Helpers
                 {
                     client.Headers.Add("Cache-Control", "no-cache");
                     var emptyBody =
-                        client.DownloadData(nonfhirRequestUrl);
+                        client.DownloadData(nonfhirBaseUrlDirect);
                 }
             }
             catch
             {
-                throw new Exception($"Non-FHIR is down -- {nonfhirRequestUrl} --");
+                throw new Exception($"Non-FHIR is down; {nonfhirBaseUrlDirect}");
             }
 
-            string patientManagerequestUrl = $"{patientManagerBaseUrlDirect}/api/patients".Replace("//a", "/a");
             try
             {
                 //staging: curl 172.19.0.11:8080/api/patients
@@ -62,14 +59,14 @@ namespace CSBDashboardServer.Helpers
                 {
                     client.Headers.Add("Cache-Control", "no-cache");
                     var jsonResponseBody =
-                        client.DownloadData(patientManagerequestUrl);
+                        client.DownloadData(patientManagerBaseUrlDirect);
                     var responseBody = (System.Text.Json.JsonElement)
                         JsonSerializer.Deserialize<dynamic>(jsonResponseBody);
                 }
             }
             catch(Exception exc)
             {
-                throw new Exception($"PatientManager is down -- {patientManagerequestUrl} --");
+                throw new Exception($"PatientManager is down; {patientManagerBaseUrlDirect} ");
             }
 
 
