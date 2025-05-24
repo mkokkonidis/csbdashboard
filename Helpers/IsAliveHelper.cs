@@ -1,4 +1,5 @@
 ﻿using CSBDashboardServer.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -8,7 +9,7 @@ namespace CSBDashboardServer.Helpers
     public static class IsAliveHelper
     {
 
-        public static dynamic IsAlive(string fhirBaseUrlDirect, string nonfhirBaseUrlDirect, string patientManagerBaseUrlDirect)
+        public static string IsAlive(string fhirBaseUrlDirect, string nonfhirBaseUrlDirect, string patientManagerBaseUrlDirect)
         {
 
             //try
@@ -68,13 +69,12 @@ namespace CSBDashboardServer.Helpers
             }
             catch(Exception exc)
             {
-                return $"NOT OK{patientManagerequestUrl}:" + exc.Message;
-                throw new HttpRequestException("PatientManager is down", null, System.Net.HttpStatusCode.InternalServerError);
+                throw new Exception($"PatientManager is down -- {patientManagerequestUrl} --");
             }
 
 
 
-            return "OK";                
+            return "OK";
  
     
     }

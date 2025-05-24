@@ -25,15 +25,20 @@ namespace CSBDashboardServer.Controllers
 
         // GET /<ValuesController>
         [HttpGet]
-        public async Task<object> Get(int foo)
+        public async Task<IActionResult> Get(int foo)
         {
+            try
+            {
 
-            string fhirBaseUrlDirect = Environment.GetEnvironmentVariable("FHIR_BASE_URL_DIRECT");
-            string nonfhirBaseUrlDirect = Environment.GetEnvironmentVariable("NONFHIR_BASE_URL_DIRECT");
-            string patientManagerBaseUrlDirect = Environment.GetEnvironmentVariable("PATIENTMANAGER_BASE_URL_DIRECT");
+                string fhirBaseUrlDirect = Environment.GetEnvironmentVariable("FHIR_BASE_URL_DIRECT");
+                string nonfhirBaseUrlDirect = Environment.GetEnvironmentVariable("NONFHIR_BASE_URL_DIRECT");
+                string patientManagerBaseUrlDirect = Environment.GetEnvironmentVariable("PATIENTMANAGER_BASE_URL_DIRECT");
 
 
-            return IsAliveHelper.IsAlive(fhirBaseUrlDirect, nonfhirBaseUrlDirect, patientManagerBaseUrlDirect);
+                return StatusCode(200, IsAliveHelper.IsAlive(fhirBaseUrlDirect, nonfhirBaseUrlDirect, patientManagerBaseUrlDirect));
+            } catch(Exception exc) {
+                return StatusCode(500, new { error = "Internal Server Error", details = exc.Message });
+            }
         }
 
 
