@@ -25,7 +25,7 @@ namespace CSBDashboardServer.Controllers
 
         // GET /<ValuesController>
         [HttpGet]
-        public async Task<object> Get()
+        public async Task<object> Get(int foo)
         {
 
             string fhirBaseUrlDirect = Environment.GetEnvironmentVariable("FHIR_BASE_URL_DIRECT");
@@ -36,12 +36,12 @@ namespace CSBDashboardServer.Controllers
             return IsAliveHelper.IsAlive(fhirBaseUrlDirect, nonfhirBaseUrlDirect, patientManagerBaseUrlDirect);
         }
 
-        // GET /<ValuesController>/5
-        [HttpGet]
-        public async Task<object> Get(string foo)
-        {
-            return Get();
-        }
+        //// GET /<ValuesController>/5
+        //[HttpGet]
+        //public async Task<object> Get(int foo)
+        //{
+        //    return Get();
+        //}
 
     }
 }
