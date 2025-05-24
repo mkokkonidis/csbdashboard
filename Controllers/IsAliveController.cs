@@ -25,7 +25,7 @@ namespace CSBDashboardServer.Controllers
 
         // GET /<ValuesController>
         [HttpGet]
-        public async Task<IActionResult> Get(int foo)
+        public async Task<IActionResult> Get()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace CSBDashboardServer.Controllers
 
                 return StatusCode(200, IsAliveHelper.IsAlive(fhirBaseUrlDirect, nonfhirBaseUrlDirect, patientManagerBaseUrlDirect));
             } catch(Exception exc) {
-                return StatusCode(500, new { error = "Internal Server Error", details = exc.Message });
+                return StatusCode(500, exc.Message);
             }
         }
 
