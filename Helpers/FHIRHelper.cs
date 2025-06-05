@@ -45,9 +45,12 @@ namespace CSBDashboardServer.Helpers
                         {
                             var resource = item.GetProperty("resource");
                             var effectiveDateTime = resource.GetProperty("effectiveDateTime").GetString();
+                            JsonElement valueQuantity;
                             var value =
-                                componentCode == null ?
-                                    resource.GetProperty("valueQuantity").GetProperty("value").GetDecimal() :
+                                componentCode == null ?                                    
+                                    (resource.TryGetProperty("valueQuantity", out valueQuantity)? 
+                                          valueQuantity.GetProperty("value").GetDecimal():
+                                          Convert.ToDecimal(resource.GetProperty("valueCodeableConcept").GetProperty("coding").EnumerateArray().ToList().First().GetProperty("code").GetString())) :
                                     resource.GetProperty("component")
                                     .EnumerateArray().ToList()
                                             .Where(_ =>

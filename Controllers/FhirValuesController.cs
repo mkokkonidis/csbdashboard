@@ -60,8 +60,10 @@ namespace CSBDashboardServer.Controllers
             var weightTask = O("code=726527001&category=408746007");
             var bloodPressureSystolicTask = O("code=75367002&category=408746007&component-code=271649006");
             var bloodPressureDiastolicTask = O("code=75367002&category=408746007&component-code=271650006");
+            var medicationAdherenceTask= O("code=418633004");
 
-            await Task.WhenAll(lightSleepTask, deepSleepTask, remSleepTask, awakeningsTask, caloriesTask, metresAscendedTask, distanceTask, stepsTask, oxygenTask, bodyTemperatureTask, heartRateWatchMinTask, heartRateWatchAvgTask, heartRateWatchMaxTask, heartRateBloodPressureMeterTask, heartRateOximeterTask, weightTask, bloodPressureDiastolicTask, bloodPressureSystolicTask);//, rasberryTask);
+
+            await Task.WhenAll(lightSleepTask, deepSleepTask, remSleepTask, awakeningsTask, caloriesTask, metresAscendedTask, distanceTask, stepsTask, oxygenTask, bodyTemperatureTask, heartRateWatchMinTask, heartRateWatchAvgTask, heartRateWatchMaxTask, heartRateBloodPressureMeterTask, heartRateOximeterTask, weightTask, bloodPressureDiastolicTask, bloodPressureSystolicTask, medicationAdherenceTask);//, rasberryTask);
 
 
             var ret = new
@@ -84,6 +86,8 @@ namespace CSBDashboardServer.Controllers
                 weight = await weightTask,
                 bloodpresureSystolic = await bloodPressureSystolicTask,
                 bloodpresureDiastolic = await bloodPressureDiastolicTask,
+                medicationAdherence = await medicationAdherenceTask
+
             };
 
             return ret;
