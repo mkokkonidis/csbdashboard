@@ -9,7 +9,7 @@ namespace CSBDashboardServer.Helpers
         static bool Verbose { get { return FhirValuesController.Verbose; } }
 
 
-        public static dynamic CompactFHIRObservations(string auth, string apiBaseUrlSlash, int patient, string spec)
+        public static dynamic CompactFHIRObservations(string auth, string apiBaseUrlSlash, int patient, string spec, bool partCode=false)
         {
             string? componentCode =
                 spec
@@ -47,9 +47,9 @@ namespace CSBDashboardServer.Helpers
                             var effectiveDateTime = resource.GetProperty("effectiveDateTime").GetString();
                             JsonElement valueQuantity;
                             var value =
-                                componentCode == null ?                                    
-                                    (resource.TryGetProperty("valueQuantity", out valueQuantity)? 
-                                          valueQuantity.GetProperty("value").GetDecimal():
+                                componentCode == null ?
+                                    (resource.TryGetProperty("valueQuantity", out valueQuantity) ?
+                                          valueQuantity.GetProperty("value").GetDecimal() :
                                           Convert.ToDecimal(resource.GetProperty("valueCodeableConcept").GetProperty("coding").EnumerateArray().ToList().First().GetProperty("code").GetString())) :
                                     resource.GetProperty("component")
                                     .EnumerateArray().ToList()
@@ -60,10 +60,15 @@ namespace CSBDashboardServer.Helpers
                                             .FirstOrDefault()
                                             .GetProperty("valueQuantity").GetProperty("value").GetDecimal();
 
-
-                            retList.Add(new decimal[] {
-                                JSDateHelper.ToJSTicks(effectiveDateTime),
-                                value });
+                            if(!partCode)
+                                retList.Add(new decimal[] {
+                                    JSDateHelper.ToJSTicks(effectiveDateTime),
+                                    value });
+                            else
+                                retList.Add(new decimal[] {
+                                    JSDateHelper.ToJSTicks(effectiveDateTime),
+                                    value,
+                                    Convert.ToInt64(resource.GetProperty("partOf").EnumerateArray().First().GetProperty("reference").GetString().Split('/')[1]) });
                         }
                         if (list.Count() < pageSize) break;
                     }
@@ -90,6 +95,8 @@ namespace CSBDashboardServer.Helpers
                 debug = infoList
             };
         }
+
+        
 
     }
 }

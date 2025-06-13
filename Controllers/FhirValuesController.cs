@@ -25,7 +25,7 @@ namespace CSBDashboardServer.Controllers
 
         // GET /<ValuesController>/5
         [HttpGet("{id}")]
-        public async Task<object> Get(int id, [FromQuery] bool? medicationAdherence)
+        public async Task<object> Get(int id, [FromQuery] string data )
         {
             var auth = Request.Headers.Authorization.ToString();
             var apiBaseUrlSlash = Environment.GetEnvironmentVariable("MAIN_URL"); // e.g., https://test-retention.biomed.ntua.gr/api/
@@ -39,11 +39,12 @@ namespace CSBDashboardServer.Controllers
             }
 
             Func<string, Task<object>> O = async (spec) => await Task.Run(() => FHIRHelper.CompactFHIRObservations(auth, apiBaseUrlSlash, id, spec));
+            Func<string, Task<object>> OPC = async (spec) => await Task.Run(() => FHIRHelper.CompactFHIRObservations(auth, apiBaseUrlSlash, id, spec, partCode:true ));
             Func<string, object, Task<object>> PNO =  (path, data) => NonFHIRHelper.NonFHIRObservations(auth, apiBaseUrlSlash, path, data);
 
-            if (medicationAdherence == true)
+            if (data == "medicationAdherence")
             {
-                var medicationAdherenceTask = O("code=418633004");
+                var medicationAdherenceTask = OPC("code=418633004");
 
                 return new
                 {
