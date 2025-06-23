@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-var verbose = true || (Environment.GetEnvironmentVariable("VERBOSE") ?? "no").ToLower() == "yes";
+var verbose =  (Environment.GetEnvironmentVariable("VERBOSE") ?? "no").ToLower() == "yes";
 
 var builder = WebApplication.CreateBuilder(args);
 

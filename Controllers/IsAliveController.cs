@@ -20,13 +20,21 @@ namespace CSBDashboardServer.Controllers
     public class IsAliveController : ControllerBase
     {
         public const bool Verbose = false;
-
+        private const int Servers = 4;
+        private const int Minutes = 15;
+        static private int skip = 0;
 
 
         // GET /<ValuesController>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] bool? reset)
         {
+            if (reset == true) skip = 0;
+
+            if(skip-->0) return StatusCode(200,"SKIP COUNTER: " +  skip + "; use ?reset=true if you want an immediate answer");
+            
+            skip = Servers * Minutes;
+
             try
             {
                 var isAlive = Environment.GetEnvironmentVariable("ISALIVE");
